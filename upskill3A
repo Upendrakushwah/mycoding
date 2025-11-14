@@ -1,0 +1,12 @@
+#include <iostream>
+#include <cstring>  
+
+
+int main(void) {
+    char str[10] = "hello";  
+    std::cout << sizeof(str) << " " << strlen(str) << std::endl;  
+    strcpy (str, "bye");
+    std :: cout<< sizeof(str) << " "<< strlen(str) << " "<< std::endl;
+    
+    return 0;
+}
