@@ -1,0 +1,22 @@
+#include <iostream>
+#include <cstring>  
+
+int mystrlen(char *s);
+
+
+int main() {
+    char str[10] = "hello";  
+    int c=mystrlen(str);
+     std ::cout<< c<< " " << std:: endl;
+     return 0;
+}
+int mystrlen (char *s)
+{
+     int c=0;
+     while ( *s != '\0')
+     {
+         c++;
+         s++;
+     }
+     return c;
+}
