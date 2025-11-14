@@ -1,0 +1,13 @@
+#include <iostream>
+#include <cstring>  
+
+int main(){
+    
+     char str1[10]=" everyone";
+     char str2[20]="hate you";
+     strcat(str1, str2);
+    std:: cout<<strcat << " "<<std::endl;
+    
+    return 0;
+}
+
