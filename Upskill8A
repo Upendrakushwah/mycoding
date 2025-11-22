@@ -1,0 +1,97 @@
+#include <iostream>
+
+// Node structure for doubly linked list
+struct Node {
+    int data;
+    Node* prev;
+    Node* next;
+    Node(int val) : data(val), prev(nullptr), next(nullptr) {}
+};
+
+// Doubly Linked List class
+class DoublyLinkedList {
+private:
+    Node* head;
+    Node* tail;
+
+public:
+    DoublyLinkedList() : head(nullptr), tail(nullptr) {}
+
+    // Insert at the beginning
+    void insertAtBeginning(int val) {
+        Node* newNode = new Node(val);
+        if (!head) {
+            head = tail = newNode;
+        } else {
+            newNode->next = head;
+            head->prev = newNode;
+            head = newNode;
+        }
+    }
+
+    // Insert at the end
+    void insertAtEnd(int val) {
+        Node* newNode = new Node(val);
+        if (!tail) {
+            head = tail = newNode;
+        } else {
+            tail->next = newNode;
+            newNode->prev = tail;
+            tail = newNode;
+        }
+    }
+
+    // Delete a node by value
+    void deleteNode(int val) {
+        if (!head) return;
+        Node* temp = head;
+        while (temp && temp->data != val) {
+            temp = temp->next;
+        }
+        if (!temp) return; // Value not found
+        if (temp == head) {
+            head = head->next;
+            if (head) head->prev = nullptr;
+            else tail = nullptr;
+        } else if (temp == tail) {
+            tail = tail->prev;
+            tail->next = nullptr;
+        } else {
+            temp->prev->next = temp->next;
+            temp->next->prev = temp->prev;
+        }
+        delete temp;
+    }
+
+    // Display the list from head to tail
+    void display() {
+        Node* temp = head;
+        while (temp) {
+            std::cout << temp->data << " ";
+            temp = temp->next;
+        }
+        std::cout << std::endl;
+    }
+
+    // Destructor to free memory
+    ~DoublyLinkedList() {
+        Node* temp = head;
+        while (temp) {
+            Node* next = temp->next;
+            delete temp;
+            temp = next;
+        }
+    }
+};
+
+// Example usage
+int main() {
+    DoublyLinkedList dll;
+    dll.insertAtEnd(1);
+    dll.insertAtEnd(2);
+    dll.insertAtBeginning(0);
+    dll.display(); // Output: 0 1 2
+    dll.deleteNode(1);
+    dll.display(); // Output: 0 2
+    return 0;
+}
