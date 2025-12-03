@@ -1,0 +1,95 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <unordered_map>
+#include <cmath>
+
+using namespace std;
+
+struct Node {
+    int x, y;
+    int g, h, f;
+    Node* parent;
+    
+    Node(int x, int y, int g, int h, Node* p = nullptr) : x(x), y(y), g(g), h(h), f(g + h), parent(p) {}
+    
+    bool operator>(const Node& other) const {
+        return f > other.f;
+    }
+};
+
+int heuristic(int x1, int y1, int x2, int y2) {
+    return abs(x1 - x2) + abs(y1 - y2); // Manhattan distance
+}
+
+vector<pair<int, int>> a_star(vector<vector<int>>& grid, pair<int, int> start, pair<int, int> goal) {
+    int rows = grid.size();
+    int cols = grid[0].size();
+    
+    priority_queue<Node, vector<Node>, greater<Node>> open_list;
+    unordered_map<int, unordered_map<int, bool>> closed_list;
+    
+    Node* start_node = new Node(start.first, start.second, 0, heuristic(start.first, start.second, goal.first, goal.second));
+    open_list.push(*start_node);
+    
+    vector<pair<int, int>> directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}}; // Up, Down, Left, Right
+    
+    while (!open_list.empty()) {
+        Node current = open_list.top();
+        open_list.pop();
+        
+        if (current.x == goal.first && current.y == goal.second) {
+            // Reconstruct path
+            vector<pair<int, int>> path;
+            Node* temp = &current;
+            while (temp) {
+                path.push_back({temp->x, temp->y});
+                temp = temp->parent;
+            }
+            reverse(path.begin(), path.end());
+            return path;
+        }
+        
+        closed_list[current.x][current.y] = true;
+        
+        for (auto& dir : directions) {
+            int nx = current.x + dir.first;
+            int ny = current.y + dir.second;
+            
+            if (nx >= 0 && nx < rows && ny >= 0 && ny < cols && grid[nx][ny] == 0 && !closed_list[nx][ny]) {
+                int new_g = current.g + 1;
+                int new_h = heuristic(nx, ny, goal.first, goal.second);
+                Node* neighbor = new Node(nx, ny, new_g, new_h, new Node(current.x, current.y, current.g, current.h, current.parent));
+                open_list.push(*neighbor);
+            }
+        }
+    }
+    
+    return {}; // No path found
+}
+
+int main() {
+    vector<vector<int>> grid = {
+        {0, 0, 0, 0, 0},
+        {0, 1, 1, 1, 0},
+        {0, 0, 0, 1, 0},
+        {0, 1, 0, 0, 0},
+        {0, 0, 0, 0, 0}
+    }; // 0 = open, 1 = obstacle
+    
+    pair<int, int> start = {0, 0};
+    pair<int, int> goal = {4, 4};
+    
+    vector<pair<int, int>> path = a_star(grid, start, goal);
+    
+    if (!path.empty()) {
+        cout << "Path found:" << endl;
+        for (auto& p : path) {
+            cout << "(" << p.first << ", " << p.second << ") ";
+        }
+    } else {
+        cout << "No path found.";
+    }
+    
+    return 0;
+}
