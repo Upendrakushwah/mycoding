@@ -1,0 +1,25 @@
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+        int n = s.length();
+        if (n == 0) return 0;
+        int res = 0;
+        vector<bool> vis(128, false); // Using 128 for full ASCII support
+
+        int left = 0;
+        for (int right = 0; right < n; right++) {
+            // Shrink the window from the left if a duplicate is found
+            while (vis[s[right]]) {
+                vis[s[left]] = false;
+                left++;
+            }
+            
+            // Mark the current character as seen
+            vis[s[right]] = true;
+            
+            // Update the maximum length found so far
+            res = max(res, right - left + 1);
+        }
+        return res;
+    }
+};
