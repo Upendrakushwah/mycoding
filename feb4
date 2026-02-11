@@ -1,0 +1,25 @@
+// Online C++ compiler to run C++ program online
+#include <iostream>
+using namespace std;
+
+
+void print (int n) {
+    if (n==2)
+    {
+        cout<<2<<endl;
+        return ;
+    }
+    if (n%2 == 0){
+        
+    cout << n <<endl;
+    print (n-2);
+    }
+    else {
+        cout<< "not an even integer"<<endl;
+    }
+
+int main() {
+    // Write C++ code here
+    int n = 10;
+    print(n);
+}
