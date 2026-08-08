@@ -1,0 +1,33 @@
+#include<iostream>
+#include <vector>
+using namespace std;
+
+int Countoccurrence (vector<int>& arr , int target)
+{
+    int count = 0;
+    for (int a : arr)
+    {
+        if (a == target)
+        {
+            
+        count ++ ;
+            
+        }
+    }
+    return count;
+}
+
+int main ()
+{
+    vector<int> arr = {2,3,4,2,4,5,4,3,5,4,6,4};
+    int target = 4;
+    
+    int count= Countoccurrence( arr, target);
+    
+    if (count!= 0)
+    cout << " no. of count are: "<< count;
+    else
+    cout <<" not found";
+    
+return 0;    
+}
